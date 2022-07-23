@@ -161,11 +161,12 @@ template <typename T>
 void vec<T>::insert(iterator obj, T item) {
 	iterator it(m_arr);
 	int index = 0;
-	if(m_size == 0) {
-		throw "Bad access";
-	}
+
 	T *t_arr;
-	t_arr = new T[m_capacity + 1];
+	if (m_size + 1 > m_capacity) {
+		m_capacity *= 2;
+	}
+	t_arr = new T[m_capacity];
 	iterator next(m_arr + 1);
 	while (it != obj && index <= m_size) {
 		t_arr[index] = *it;
@@ -180,7 +181,6 @@ void vec<T>::insert(iterator obj, T item) {
 	t_arr[index] = item;
 	index++;
 	while (index < m_size + 1) {
-		
 		t_arr[index] = *it;
 		++it;
 		index++;
@@ -227,10 +227,9 @@ void vec<T>::remove(iterator obj) {
 
 int main(int argc, const char * argv[]) {
 	vec<int> a(3);
-	a.push(7);
-	a.push(8);
-	a.push(9);
-	a.insert(a.begin()+1, 17);
+	a.insert(a.begin(), 17);
+	vec<int>::iterator i = a.begin();
+	std::cout << i[0] << std::endl;
 	a.remove(a.begin());
     return 0;
 }
